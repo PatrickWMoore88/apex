@@ -19,16 +19,26 @@ app.use(function(req, res, next) {
   next();
 });
 
-var screenName, platform;
+var screen_name, platform;
 
-function apiCall() {
-  axios
+function platformChange(platform) {
+  if (platform == "XBOX") {
+    var platformId = 1;
+  } else if (platform == "PSN") {
+    var platformId = 2;
+  } else if (platform == "Origin / PC") {
+    var platformId = 5;
+  }
+  return platformId;
+}
+
+function apiCall(screen_name, platformId) {
+  var apexData = axios
     .get(
-      //   "https://public-api.tracker.gg/apex/v1/standard/profile/2/Day_Man3030",
       "https://public-api.tracker.gg/apex/v1/standard/profile/" +
-        platform +
+        platformId +
         "/" +
-        screenName,
+        screen_name,
       {
         headers: {
           "TRN-Api-Key": "bea1468c-980b-4702-82a9-49d9fb838403"
@@ -36,15 +46,16 @@ function apiCall() {
       }
     )
     .then(res => {
-      console.log(res.data.data.children[0].metadata.legend_name);
-      console.log(res.data.data.children[1].metadata.legend_name);
-      console.log(res.data.data.children[2].metadata.legend_name);
-      console.log(res.data.data.children[3].metadata.legend_name);
+      console.log(apexData);
     })
     .catch(err => {
       console.log(err);
     });
 }
+// function pickedData(response) {
+//   var res = response;
+//   return res;
+// }
 
 function encryptionPassword(req, res, next) {
   var key = pbkdf2.pbkdf2Sync(req.body.password, salt, 36000, 256, "sha256");
@@ -62,7 +73,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/success", (req, res) => {
-  res.send("Welcome " + req.query.username + " You Have Logged In!");
+  res.send("Welcome " + req.query.name + " You Have Logged In!");
 });
 app.get("/error", (req, res) => {
   res.send("Error Logging In");
@@ -82,11 +93,11 @@ passport.deserializeUser(function(id, cb) {
 const localStrategy = require("passport-local").Strategy;
 
 passport.use(
-  new localStrategy(function(username, password, done) {
+  new localStrategy(function(name, password, done) {
     models.user
       .findOne({
         where: {
-          username: username
+          name: name
         }
       })
       .then(function(user) {
@@ -108,20 +119,29 @@ app.post(
   "/",
   passport.authenticate("local", { failureRedirect: "/error" }),
   function(req, res) {
-    res.redirect("/success?username=" + req.user.username);
+    res.redirect("/success?name=" + req.user.name);
   }
 );
 
 app.post("/register", encryptionPassword, function(req, res) {
   models.user
     .create({
-      username: req.body.username,
+      name: req.body.username,
       password: req.body.password,
-      screenName: req.body.screenName,
+      screen_name: req.body.screen_name,
       platform: req.body.platform
     })
     .then(function(user) {
-      res.send(user);
+      console.log(user);
+      let platform = user.dataValues.platform;
+      let screen_name = user.dataValues.screen_name;
+      let platformId = platformChange(platform);
+      console.log(platformId);
+      let apexData = apiCall(screen_name, platformId);
+      console.log(apexData);
+      // apiCall(screen_name, platformId);
+      // res.redirect("/login");
+      res.send("Welcome ");
     });
 });
 
@@ -129,16 +149,16 @@ app.post("/login", encryptionPassword, function(req, res) {
   models.user
     .findOne({
       where: {
-        username: req.body.username,
-        password: req.body.password,
-        screenName: req.body.screenName,
-        platform: req.body.platform
+        name: req.body.username,
+        password: req.body.password
       }
     })
     .then(function(user) {
       console.log("There was an User");
+      platformChange(platform);
+      // apiCall(screen_name, platformId);
       console.log(user);
-      res.send(user);
+      res.send("Welcome " + screen_name);
     });
 });
 
