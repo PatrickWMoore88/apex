@@ -20,20 +20,27 @@ app.use(function(req, res, next) {
 });
 
 var screen_name, platform;
+var legendInfo = {};
 
 function platformChange(platform) {
-  if (platform == "XBOX") {
+  if (platform == "XBOX" || platform == "Xbox" || platform == "xbox") {
     var platformId = 1;
-  } else if (platform == "PSN") {
+  } else if (platform == "PSN" || platform == "psn") {
     var platformId = 2;
-  } else if (platform == "Origin / PC") {
+  } else if (
+    platform == "Origin / PC" ||
+    platform == "Origin" ||
+    platform == "origin" ||
+    platform == "PC" ||
+    platform == "pc"
+  ) {
     var platformId = 5;
   }
   return platformId;
 }
 
 function apiCall(screen_name, platformId) {
-  var apexData = axios
+  axios
     .get(
       "https://public-api.tracker.gg/apex/v1/standard/profile/" +
         platformId +
@@ -46,16 +53,20 @@ function apiCall(screen_name, platformId) {
       }
     )
     .then(res => {
-      console.log(apexData);
+      let legendInfo = {};
+      var apexData = res.data.data.children;
+      apexData.forEach(legend => {
+        legendInfo.metaData = legend.metadata;
+        legendInfo.stats = legend.stats;
+        return legendInfo;
+      });
+      return legendInfo;
     })
     .catch(err => {
       console.log(err);
     });
+  return legendInfo;
 }
-// function pickedData(response) {
-//   var res = response;
-//   return res;
-// }
 
 function encryptionPassword(req, res, next) {
   var key = pbkdf2.pbkdf2Sync(req.body.password, salt, 36000, 256, "sha256");
@@ -132,15 +143,12 @@ app.post("/register", encryptionPassword, function(req, res) {
       platform: req.body.platform
     })
     .then(function(user) {
-      console.log(user);
       let platform = user.dataValues.platform;
       let screen_name = user.dataValues.screen_name;
       let platformId = platformChange(platform);
-      console.log(platformId);
-      let apexData = apiCall(screen_name, platformId);
-      console.log(apexData);
-      // apiCall(screen_name, platformId);
-      // res.redirect("/login");
+      // let apexData =
+      apiCall(screen_name, platformId);
+      console.log(legendInfo);
       res.send("Welcome ");
     });
 });
@@ -157,7 +165,7 @@ app.post("/login", encryptionPassword, function(req, res) {
       console.log("There was an User");
       platformChange(platform);
       // apiCall(screen_name, platformId);
-      console.log(user);
+      // console.log(user);
       res.send("Welcome " + screen_name);
     });
 });
