@@ -148,13 +148,34 @@ app.post(
   }
 );
 
-app.post("/register", encryptionPassword, function(req, res) {
-  models.user.create({
-    name: req.body.user_name,
-    password: JSON.stringify(req.body.password),
-    screen_name: req.body.screen_name,
-    platform: req.body.platform
-  });
+app.post("/register", encryptionPassword, async (req, res) => {
+  try {
+    await models.user
+      .findOne({
+        where: { name: req.body.user_name }
+      })
+      .then(function(registeredUser) {
+        if (registeredUser != req.body.user_name) {
+          // throw new Error("Sorry, please try a different User Name");
+          models.user.create({
+            name: req.body.user_name,
+            password: JSON.stringify(req.body.password),
+            screen_name: req.body.screen_name,
+            platform: req.body.platform
+          });
+        } else {
+          throw new Error("Sorry, please try a different User Name");
+          // models.user.create({
+          //   name: req.body.user_name,
+          //   password: JSON.stringify(req.body.password),
+          //   screen_name: req.body.screen_name,
+          //   platform: req.body.platform
+          // });
+        }
+      });
+  } catch (error) {
+    console.log(error, req.body.user_name);
+  }
   res.redirect("/login");
 });
 
