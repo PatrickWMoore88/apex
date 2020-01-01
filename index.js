@@ -6,13 +6,20 @@ const bodyParser = require("body-parser");
 const pbkdf2 = require("pbkdf2");
 const crypto = require("crypto");
 const axios = require("axios");
+const accountRouter = require("./routes/account");
+const exploreRouter = require("./routes/explore");
 
 var salt = crypto.randomBytes(20).toString("hex");
+
+app.set("view engine", "pug");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// app.use(express.static("public"));
 app.use(express.static(__dirname + "/public"));
+app.use("/account", accountRouter);
+app.use("/explore", exploreRouter);
 
 app.use(function(req, res, next) {
   console.log(req.method, req.path);
@@ -20,27 +27,33 @@ app.use(function(req, res, next) {
 });
 
 var screen_name, platform;
+var apexData = [];
 var legendInfo = {};
 
 function platformChange(platform) {
-  if (platform == "XBOX" || platform == "Xbox" || platform == "xbox") {
-    var platformId = 1;
-  } else if (platform == "PSN" || platform == "psn") {
-    var platformId = 2;
-  } else if (
-    platform == "Origin / PC" ||
-    platform == "Origin" ||
-    platform == "origin" ||
-    platform == "PC" ||
-    platform == "pc"
-  ) {
-    var platformId = 5;
-  }
+  app.get("/register");
+  models.user
+    .findOne({
+      where: {
+        platform: req.body.platformId
+      }
+    })
+    .then(function(platform) {
+      if (platform == "XBOX") {
+        var platformId = 1;
+      } else if (platform == "PSN") {
+        var platformId = 2;
+      } else if (platform == "Origin / PC") {
+        var platformId = 5;
+      }
+      console.log(platformId);
+      return platformId;
+    });
   return platformId;
 }
 
 function apiCall(screen_name, platformId) {
-  axios
+  return axios
     .get(
       "https://public-api.tracker.gg/apex/v1/standard/profile/" +
         platformId +
@@ -53,19 +66,12 @@ function apiCall(screen_name, platformId) {
       }
     )
     .then(res => {
-      let legendInfo = {};
-      var apexData = res.data.data.children;
-      apexData.forEach(legend => {
-        legendInfo.metaData = legend.metadata;
-        legendInfo.stats = legend.stats;
-        return legendInfo;
-      });
-      return legendInfo;
+      this.res = res.data.data.children;
+      apexData = this.res;
     })
     .catch(err => {
       console.log(err);
     });
-  return legendInfo;
 }
 
 function encryptionPassword(req, res, next) {
@@ -126,6 +132,14 @@ passport.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.get("/registration", (req, res) => {
+  res.render("registration");
+});
+
 app.post(
   "/",
   passport.authenticate("local", { failureRedirect: "/error" }),
@@ -135,38 +149,46 @@ app.post(
 );
 
 app.post("/register", encryptionPassword, function(req, res) {
-  models.user
-    .create({
-      name: req.body.username,
-      password: req.body.password,
-      screen_name: req.body.screen_name,
-      platform: req.body.platform
-    })
-    .then(function(user) {
-      let platform = user.dataValues.platform;
-      let screen_name = user.dataValues.screen_name;
-      let platformId = platformChange(platform);
-      // let apexData =
-      apiCall(screen_name, platformId);
-      console.log(legendInfo);
-      res.send("Welcome ");
-    });
+  models.user.create({
+    name: req.body.user_name,
+    password: JSON.stringify(req.body.password),
+    screen_name: req.body.screen_name,
+    platform: req.body.platform
+  });
+  res.redirect("/login");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
 app.post("/login", encryptionPassword, function(req, res) {
   models.user
     .findOne({
       where: {
-        name: req.body.username,
+        name: req.body.user_name,
         password: req.body.password
       }
     })
     .then(function(user) {
-      console.log("There was an User");
-      platformChange(platform);
-      // apiCall(screen_name, platformId);
-      // console.log(user);
-      res.send("Welcome " + screen_name);
+      let platform = user.dataValues.platform;
+      let screen_name = user.dataValues.screen_name;
+      if (platform == "XBOX") {
+        var platformId = 1;
+      } else if (platform == "PSN") {
+        var platformId = 2;
+      } else if (platform == "Origin / PC") {
+        var platformId = 5;
+      }
+      apiCall(screen_name, platformId).then(data => {
+        for (var i = 0; i < apexData.length; i++) {
+          var metadata = "metadata_" + apexData[i].metadata.legend_name;
+          var stats = "stats_" + apexData[i].metadata.legend_name;
+          legendInfo[metadata] = apexData[i].metadata;
+          legendInfo[stats] = apexData[i].stats[i];
+        }
+        res.render("/account/dashboard");
+      });
     });
 });
 
