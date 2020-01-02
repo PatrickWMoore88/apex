@@ -145,7 +145,9 @@ router.post("/to-watch/delete", authenticate, async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  req.session.destroy();
+  if (req.session) {
+    req.session.destroy();
+  }
   res.redirect("/login");
 });
 

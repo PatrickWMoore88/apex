@@ -1,6 +1,7 @@
 // Express, Body-Parser, and Encrytion Setup
 const express = require("express");
 const app = express();
+const session = require("express-session");
 const models = require("./models");
 const bodyParser = require("body-parser");
 const pbkdf2 = require("pbkdf2");
@@ -16,7 +17,13 @@ app.set("view engine", "pug");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use(express.static("public"));
+app.use(
+  session({
+    secret: "La Li Lu Le Lo",
+    resave: false,
+    saveUninitialized: true
+  })
+);
 app.use(express.static(__dirname + "/public"));
 app.use("/account", accountRouter);
 app.use("/explore", exploreRouter);
@@ -45,6 +52,7 @@ function apiCall(screen_name, platformId) {
     .then(res => {
       this.res = res.data.data.children;
       apexData = this.res;
+      return apexData;
     })
     .catch(err => {
       console.log(err);
@@ -171,7 +179,6 @@ app.post("/login", encryptionPassword, (req, res) => {
       }
     })
     .then(function(user) {
-      console.log(user);
       let platform = req.body.platform;
       let screen_name = req.body.screen_name;
       if (platform == "XBOX") {
@@ -182,13 +189,15 @@ app.post("/login", encryptionPassword, (req, res) => {
         var platformId = 5;
       }
       apiCall(screen_name, platformId).then(data => {
-        for (var i = 0; i < apexData.length; i++) {
-          var metadata = "metadata_" + apexData[i].metadata.legend_name;
-          var stats = "stats_" + apexData[i].metadata.legend_name;
-          legendInfo[metadata] = apexData[i].metadata;
-          legendInfo[stats] = apexData[i].stats[i];
-        }
-        console.log(legendInfo);
+        // for (var i = 0; i < apexData.length; i++) {
+        //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
+        //   var stats = "stats_" + apexData[i].metadata.legend_name;
+        //   legendInfo[metadata] = apexData[i].metadata;
+        //   legendInfo[stats] = apexData[i].stats[i];
+        // }
+        // console.log(legendInfo);
+        console.log(apexData[0].metadata.legend_name);
+        console.log(apexData[0].stats);
       });
     });
   res.render("./account/dashboard");
