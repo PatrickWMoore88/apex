@@ -1,17 +1,17 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const bag = sequelize.define(
-    "bag",
+  const knockdown_sheild = sequelize.define(
+    "knockdown_sheild",
     {
       name: DataTypes.STRING,
       perk: DataTypes.STRING,
       rarity: DataTypes.STRING,
-      slot_count: DataTypes.INTEGER
+      health: DataTypes.INTEGER
     },
     {}
   );
-  bag.associate = function(models) {
+  knockdown_sheild.associate = function(models) {
     // associations can be defined here
   };
-  return bag;
+  return knockdown_sheild;
 };

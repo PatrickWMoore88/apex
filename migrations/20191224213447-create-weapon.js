@@ -29,58 +29,58 @@ module.exports = {
           },
           key: "id"
         },
-        allowNull: false,
+        allowNull: true,
         onDelete: "cascade",
         onUpdate: "cascade"
       },
-      stabalizer: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "stabalizers"
-          },
-          key: "id"
-        },
-        allowNull: false,
-        onDelete: "cascade",
-        onUpdate: "cascade"
-      },
-      extended_clip: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "extended_clips"
-          },
-          key: "id"
-        },
-        allowNull: false,
-        onDelete: "cascade",
-        onUpdate: "cascade"
-      },
-      stock: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "stocks"
-          },
-          key: "id"
-        },
-        allowNull: false,
-        onDelete: "cascade",
-        onUpdate: "cascade"
-      },
-      sight: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "sights"
-          },
-          key: "id"
-        },
-        allowNull: false,
-        onDelete: "cascade",
-        onUpdate: "cascade"
-      },
+      // stabalizer: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: "stabalizers"
+      //     },
+      //     key: "id"
+      //   },
+      //   allowNull: false,
+      //   onDelete: "cascade",
+      //   onUpdate: "cascade"
+      // },
+      // extended_clip: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: "extended_clips"
+      //     },
+      //     key: "id"
+      //   },
+      //   allowNull: false,
+      //   onDelete: "cascade",
+      //   onUpdate: "cascade"
+      // },
+      // stock: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: "stocks"
+      //     },
+      //     key: "id"
+      //   },
+      //   allowNull: false,
+      //   onDelete: "cascade",
+      //   onUpdate: "cascade"
+      // },
+      // sight: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: "sights"
+      //     },
+      //     key: "id"
+      //   },
+      //   allowNull: false,
+      //   onDelete: "cascade",
+      //   onUpdate: "cascade"
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

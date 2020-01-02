@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('helments', {
+    return queryInterface.createTable("helmets", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,7 +17,7 @@ module.exports = {
       rarity: {
         type: Sequelize.STRING
       },
-      health: {
+      damage_reduction: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -31,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('helments');
+    return queryInterface.dropTable("helmets");
   }
 };

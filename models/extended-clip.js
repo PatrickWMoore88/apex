@@ -1,17 +1,17 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const bag = sequelize.define(
-    "bag",
+  const extended_clip = sequelize.define(
+    "extended_clip",
     {
       name: DataTypes.STRING,
       perk: DataTypes.STRING,
       rarity: DataTypes.STRING,
-      slot_count: DataTypes.INTEGER
+      ammo_type: DataTypes.INTEGER
     },
     {}
   );
-  bag.associate = function(models) {
+  extended_clip.associate = function(models) {
     // associations can be defined here
   };
-  return bag;
+  return extended_clip;
 };

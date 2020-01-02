@@ -26,31 +26,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-var screen_name, platform;
 var apexData = [];
 var legendInfo = {};
-
-function platformChange(platform) {
-  app.get("/register");
-  models.user
-    .findOne({
-      where: {
-        platform: req.body.platformId
-      }
-    })
-    .then(function(platform) {
-      if (platform == "XBOX") {
-        var platformId = 1;
-      } else if (platform == "PSN") {
-        var platformId = 2;
-      } else if (platform == "Origin / PC") {
-        var platformId = 5;
-      }
-      console.log(platformId);
-      return platformId;
-    });
-  return platformId;
-}
 
 function apiCall(screen_name, platformId) {
   return axios
@@ -183,17 +160,20 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.post("/login", encryptionPassword, function(req, res) {
+app.post("/login", encryptionPassword, (req, res) => {
   models.user
     .findOne({
       where: {
         name: req.body.user_name,
-        password: req.body.password
+        password: req.body.password,
+        screen_name: req.body.screen_name,
+        platform: req.body.platform
       }
     })
     .then(function(user) {
-      let platform = user.dataValues.platform;
-      let screen_name = user.dataValues.screen_name;
+      console.log(user);
+      let platform = req.body.platform;
+      let screen_name = req.body.screen_name;
       if (platform == "XBOX") {
         var platformId = 1;
       } else if (platform == "PSN") {
@@ -208,9 +188,10 @@ app.post("/login", encryptionPassword, function(req, res) {
           legendInfo[metadata] = apexData[i].metadata;
           legendInfo[stats] = apexData[i].stats[i];
         }
-        res.render("/account/dashboard");
+        console.log(legendInfo);
       });
     });
+  res.render("./account/dashboard");
 });
 
 // Dynamic Port Setting

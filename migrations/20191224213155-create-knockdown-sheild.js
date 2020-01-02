@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('dropdown_sheilds', {
+    return queryInterface.createTable("knockdown_sheilds", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -31,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('dropdown_sheilds');
+    return queryInterface.dropTable("knockdown_sheilds");
   }
 };

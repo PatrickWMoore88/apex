@@ -25,7 +25,6 @@ module.exports = {
           },
           key: "id"
         },
-        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade"
       },

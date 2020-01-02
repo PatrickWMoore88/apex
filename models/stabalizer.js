@@ -1,10 +1,15 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const stabalizer = sequelize.define('stabalizer', {
-    name: DataTypes.STRING,
-    perk: DataTypes.STRING,
-    rarity: DataTypes.STRING
-  }, {});
+  const stabalizer = sequelize.define(
+    "stabalizer",
+    {
+      name: DataTypes.STRING,
+      recoil_reduction: DataTypes.STRING,
+      perk: DataTypes.STRING,
+      rarity: DataTypes.STRING
+    },
+    {}
+  );
   stabalizer.associate = function(models) {
     // associations can be defined here
   };
