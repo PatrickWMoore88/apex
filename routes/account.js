@@ -145,10 +145,18 @@ router.post("/to-watch/delete", authenticate, async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  if (req.session) {
-    req.session.destroy();
-  }
-  res.redirect("/login");
+  // if (req.session) {
+  req.session.destroy(err => {
+    // req.session.r;
+    console.log("Session was destroyed");
+    res.redirect("/");
+  });
+  // console.log("Session was destroyed");
+  // console.log(req.sessionID);
+  // } else {
+  //   console.log("Session still active");
+  // }
+  // res.redirect("/login");
 });
 
 module.exports = router;

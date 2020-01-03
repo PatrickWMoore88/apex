@@ -5,12 +5,10 @@ const session = require("express-session");
 const models = require("./models");
 const bodyParser = require("body-parser");
 const pbkdf2 = require("pbkdf2");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 const axios = require("axios");
 const accountRouter = require("./routes/account");
 const exploreRouter = require("./routes/explore");
-
-var salt = crypto.randomBytes(20).toString("hex");
 
 app.set("view engine", "pug");
 
@@ -21,7 +19,8 @@ app.use(
   session({
     secret: "La Li Lu Le Lo",
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    unset: "destroy"
   })
 );
 app.use(express.static(__dirname + "/public"));
@@ -59,14 +58,12 @@ function apiCall(screen_name, platformId) {
     });
 }
 
-function encryptionPassword(req, res, next) {
-  var key = pbkdf2.pbkdf2Sync(req.body.password, salt, 36000, 256, "sha256");
-  var hash = key.toString("hex");
-  var prf = "pbkdf2_sha256";
-  var iterations = "36000";
+var salt = "4213426A433E1F9C29368F36F44F1";
 
-  req.body.password = `${prf}$${iterations}$${salt}$${hash}`;
-  next();
+function encryptionPassword(password) {
+  var key = pbkdf2.pbkdf2Sync(password, salt, 36000, 256, "sha256");
+  var hash = key.toString("hex");
+  return hash;
 }
 
 // Passport Setup
@@ -106,8 +103,8 @@ passport.use(
         if (!user) {
           return done(null, false);
         }
-        if (user.password != password) {
-          return done(null, user);
+        if (user.password != encryptionPassword(password)) {
+          return done(null, false);
         }
         return done(null, user);
       })
@@ -121,30 +118,35 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/registration", (req, res) => {
-  res.render("registration");
-});
-
 app.post(
   "/",
   passport.authenticate("local", { failureRedirect: "/error" }),
   function(req, res) {
-    res.redirect("/success?name=" + req.user.name);
+    res.redirect("/success?username=" + req.user.name);
   }
 );
 
-app.post("/register", encryptionPassword, async (req, res) => {
+app.get("/registration", (req, res) => {
+  res.render("registration");
+});
+
+app.post("/register", async (req, res) => {
   try {
     await models.user
       .findOne({
         where: { name: req.body.user_name }
       })
       .then(function(registeredUser) {
+        if (!registeredUser) {
+          console.log("No User");
+          res.redirect("/login");
+        }
+
         if (registeredUser != req.body.user_name) {
           // throw new Error("Sorry, please try a different User Name");
           models.user.create({
             name: req.body.user_name,
-            password: JSON.stringify(req.body.password),
+            password: encryptionPassword(req.body.password),
             screen_name: req.body.screen_name,
             platform: req.body.platform
           });
@@ -168,17 +170,18 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.post("/login", encryptionPassword, (req, res) => {
+app.post("/login", (req, res) => {
   models.user
     .findOne({
       where: {
         name: req.body.user_name,
-        password: req.body.password,
+        password: encryptionPassword(req.body.password),
         screen_name: req.body.screen_name,
         platform: req.body.platform
       }
     })
     .then(function(user) {
+      console.log(user);
       let platform = req.body.platform;
       let screen_name = req.body.screen_name;
       if (platform == "XBOX") {
@@ -188,19 +191,20 @@ app.post("/login", encryptionPassword, (req, res) => {
       } else if (platform == "Origin / PC") {
         var platformId = 5;
       }
-      apiCall(screen_name, platformId).then(data => {
-        // for (var i = 0; i < apexData.length; i++) {
-        //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
-        //   var stats = "stats_" + apexData[i].metadata.legend_name;
-        //   legendInfo[metadata] = apexData[i].metadata;
-        //   legendInfo[stats] = apexData[i].stats[i];
-        // }
-        // console.log(legendInfo);
-        console.log(apexData[0].metadata.legend_name);
-        console.log(apexData[0].stats);
-      });
+      // apiCall(screen_name, platformId).then(data => {
+      //   // for (var i = 0; i < apexData.length; i++) {
+      //   //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
+      //   //   var stats = "stats_" + apexData[i].metadata.legend_name;
+      //   //   legendInfo[metadata] = apexData[i].metadata;
+      //   //   legendInfo[stats] = apexData[i].stats[i];
+      //   // }
+      //   // console.log(legendInfo);
+      //   console.log(apexData[0].metadata.legend_name);
+      //   console.log(apexData[0].stats);
+      // });
+      res.render("./account/dashboard");
     });
-  res.render("./account/dashboard");
+  // res.render("./account/dashboard");
 });
 
 // Dynamic Port Setting
