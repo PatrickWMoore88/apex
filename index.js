@@ -9,6 +9,9 @@ const pbkdf2 = require("pbkdf2");
 const axios = require("axios");
 const accountRouter = require("./routes/account");
 const exploreRouter = require("./routes/explore");
+require("dotenv").config();
+
+var salt = Process.env.SALT_KEY;
 
 app.set("view engine", "pug");
 
@@ -44,7 +47,7 @@ function apiCall(screen_name, platformId) {
         screen_name,
       {
         headers: {
-          "TRN-Api-Key": "bea1468c-980b-4702-82a9-49d9fb838403"
+          "TRN-Api-Key": Process.env.API_KEY
         }
       }
     )
@@ -58,8 +61,6 @@ function apiCall(screen_name, platformId) {
     });
 }
 
-var salt = "4213426A433E1F9C29368F36F44F1";
-
 function encryptionPassword(password) {
   var key = pbkdf2.pbkdf2Sync(password, salt, 36000, 256, "sha256");
   var hash = key.toString("hex");
@@ -72,7 +73,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/success", (req, res) => {
-  res.send("Welcome " + req.query.name + " You Have Logged In!");
+  if (req.isAuthenticated()) {
+    res.send("Welcome " + req.user.name + " You Have Logged In!");
+  } else {
+    res.send("Not Authorized!");
+  }
 });
 app.get("/error", (req, res) => {
   res.send("Error Logging In");
@@ -90,7 +95,6 @@ passport.deserializeUser(function(id, cb) {
 
 // Passport Local Authentication
 const localStrategy = require("passport-local").Strategy;
-
 passport.use(
   new localStrategy(function(name, password, done) {
     models.user
@@ -122,7 +126,7 @@ app.post(
   "/",
   passport.authenticate("local", { failureRedirect: "/error" }),
   function(req, res) {
-    res.redirect("/success?username=" + req.user.name);
+    res.redirect("/success");
   }
 );
 
@@ -175,15 +179,15 @@ app.post("/login", (req, res) => {
     .findOne({
       where: {
         name: req.body.user_name,
-        password: encryptionPassword(req.body.password),
-        screen_name: req.body.screen_name,
-        platform: req.body.platform
+        password: encryptionPassword(req.body.password)
+        // screen_name: req.body.screen_name,
+        // platform: req.body.platform
       }
     })
     .then(function(user) {
       console.log(user);
-      let platform = req.body.platform;
-      let screen_name = req.body.screen_name;
+      let platform = user.dataValues.platform;
+      let screen_name = user.dataValues.screen_name;
       if (platform == "XBOX") {
         var platformId = 1;
       } else if (platform == "PSN") {
@@ -191,22 +195,22 @@ app.post("/login", (req, res) => {
       } else if (platform == "Origin / PC") {
         var platformId = 5;
       }
-      // apiCall(screen_name, platformId).then(data => {
-      //   // for (var i = 0; i < apexData.length; i++) {
-      //   //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
-      //   //   var stats = "stats_" + apexData[i].metadata.legend_name;
-      //   //   legendInfo[metadata] = apexData[i].metadata;
-      //   //   legendInfo[stats] = apexData[i].stats[i];
-      //   // }
-      //   // console.log(legendInfo);
-      //   console.log(apexData[0].metadata.legend_name);
-      //   console.log(apexData[0].stats);
-      // });
+      apiCall(screen_name, platformId).then(data => {
+        // for (var i = 0; i < apexData.length; i++) {
+        //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
+        //   var stats = "stats_" + apexData[i].metadata.legend_name;
+        //   legendInfo[metadata] = apexData[i].metadata;
+        //   legendInfo[stats] = apexData[i].stats[i];
+        // }
+        // console.log(legendInfo);
+        console.log(apexData[0].metadata.legend_name);
+        console.log(apexData[0].stats);
+      });
       res.render("./account/dashboard");
     });
   // res.render("./account/dashboard");
 });
 
 // Dynamic Port Setting
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log("App Listening on Port " + port));
