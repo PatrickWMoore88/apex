@@ -27,9 +27,31 @@ body {
   text-shadow: 4px 3px black;
 }
 
+li {
+  list-style-type: none;
+}
+
 a,
 a:hover,
 a:focus {
-  color: red;
+  background-color: black;
+  color: yellow;
   text-decoration: none;
+}
+
+#legendInfo {
+  background-color: black;
+  text-align: center;
+  padding-right: 15px;
+  margin-left: 400px;
+  margin-right: 415px;
+}
+
+#legends {
+  background-color: black;
+  text-align: center;
+  font-size: 30px;
+  margin-left: 300px;
+  margin-right: 315px;
+  padding-right: 15px;
 }

@@ -5,13 +5,12 @@ const session = require("express-session");
 const models = require("./models");
 const bodyParser = require("body-parser");
 const pbkdf2 = require("pbkdf2");
-// const crypto = require("crypto");
 const axios = require("axios");
 const accountRouter = require("./routes/account");
 const exploreRouter = require("./routes/explore");
 require("dotenv").config();
 
-var salt = Process.env.SALT_KEY;
+var salt = process.env.SALT_KEY;
 
 app.set("view engine", "pug");
 
@@ -35,8 +34,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-var apexData = [];
-var legendInfo = {};
+// var apexData = [];
+//var legendInfo = {};
 
 function apiCall(screen_name, platformId) {
   return axios
@@ -47,7 +46,7 @@ function apiCall(screen_name, platformId) {
         screen_name,
       {
         headers: {
-          "TRN-Api-Key": Process.env.API_KEY
+          "TRN-Api-Key": process.env.API_KEY
         }
       }
     )
@@ -80,7 +79,7 @@ app.get("/success", (req, res) => {
   }
 });
 app.get("/error", (req, res) => {
-  res.send("Error Logging In");
+  res.send("Error Please Try Again");
 });
 
 passport.serializeUser(function(user, cb) {
@@ -122,52 +121,33 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.post(
-  "/",
-  passport.authenticate("local", { failureRedirect: "/error" }),
-  function(req, res) {
-    res.redirect("/success");
-  }
-);
-
 app.get("/registration", (req, res) => {
   res.render("registration");
 });
 
 app.post("/register", async (req, res) => {
-  try {
-    await models.user
-      .findOne({
-        where: { name: req.body.user_name }
-      })
-      .then(function(registeredUser) {
-        if (!registeredUser) {
-          console.log("No User");
-          res.redirect("/login");
-        }
-
-        if (registeredUser != req.body.user_name) {
-          // throw new Error("Sorry, please try a different User Name");
-          models.user.create({
+  // try {
+  await models.user
+    .findOne({
+      where: { name: req.body.user_name }
+    })
+    .then(function(registeredUser) {
+      if (registeredUser) {
+        console.log(new Error("Sorry, please try a different User Name"));
+        res.redirect("/registration");
+      } else {
+        models.user
+          .create({
             name: req.body.user_name,
             password: encryptionPassword(req.body.password),
             screen_name: req.body.screen_name,
             platform: req.body.platform
+          })
+          .then(function(user) {
+            res.redirect("/login");
           });
-        } else {
-          throw new Error("Sorry, please try a different User Name");
-          // models.user.create({
-          //   name: req.body.user_name,
-          //   password: JSON.stringify(req.body.password),
-          //   screen_name: req.body.screen_name,
-          //   platform: req.body.platform
-          // });
-        }
-      });
-  } catch (error) {
-    console.log(error, req.body.user_name);
-  }
-  res.redirect("/login");
+      }
+    });
 });
 
 app.get("/login", (req, res) => {
@@ -180,35 +160,85 @@ app.post("/login", (req, res) => {
       where: {
         name: req.body.user_name,
         password: encryptionPassword(req.body.password)
-        // screen_name: req.body.screen_name,
-        // platform: req.body.platform
       }
     })
     .then(function(user) {
-      console.log(user);
-      let platform = user.dataValues.platform;
-      let screen_name = user.dataValues.screen_name;
-      if (platform == "XBOX") {
-        var platformId = 1;
-      } else if (platform == "PSN") {
-        var platformId = 2;
-      } else if (platform == "Origin / PC") {
-        var platformId = 5;
+      if (!req.body.name === user.dataValues.name) {
+        res.send("Sorry you are not authorized!");
+      } else {
+        console.log(user);
+        let platform = user.dataValues.platform;
+        let screen_name = user.dataValues.screen_name;
+        if (platform == "XBOX") {
+          var platformId = 1;
+        } else if (platform == "PSN") {
+          var platformId = 2;
+        } else if (platform == "Origin / PC") {
+          var platformId = 5;
+        }
+        apiCall(screen_name, platformId).then(data => {
+          // console.log(data);
+          // for (var i = 0; i < apexData.length; i++) {
+          //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
+          //   var stats = "stats_" + apexData[i].metadata.legend_name;
+          //   legendInfo[metadata] = apexData[i].metadata;
+          //   legendInfo[stats] = apexData[i].stats[i];
+          // }
+          // console.log(legendInfo);
+          // console.log(apexData);
+          console.log(apexData[0].metadata.legend_name);
+          console.log(apexData[0].stats[0]);
+          console.log(apexData[0].stats[1]);
+          console.log(apexData[0].stats[2]);
+          console.log(apexData[1].metadata.legend_name);
+          console.log(apexData[1].stats[0]);
+          console.log(apexData[1].stats[1]);
+          console.log(apexData[1].stats[2]);
+          res.render("./account/dashboard", {
+            username: req.body.user_name,
+            legend1Name: data[0].metadata.legend_name,
+            legend1StatTracker1: data[0].stats[0].metadata.name,
+            legend1StatTracker1Data: data[0].stats[0].value,
+            legend1StatTracker2: data[0].stats[1].metadata.name,
+            legend1StatTracker2Data: data[0].stats[1].value,
+            legend1StatTracker3: data[0].stats[2].metadata.name,
+            legend1StatTracker3Data: data[0].stats[2].value,
+            legend2Name: data[1].metadata.legend_name,
+            legend2StatTracker1: data[1].stats[0].metadata.name,
+            legend2StatTracker1Data: data[1].stats[0].value,
+            legend2StatTracker2: data[1].stats[1].metadata.name,
+            legend2StatTracker2Data: data[1].stats[1].value,
+            legend2StatTracker3: data[1].stats[2].metadata.name,
+            legend2StatTracker3Data: data[1].stats[2].value,
+            legend3Name: data[2].metadata.legend_name,
+            legend3StatTracker1: data[2].stats[0].metadata.name,
+            legend3StatTracker1Data: data[2].stats[0].value,
+            legend3StatTracker2: data[2].stats[1].metadata.name,
+            legend3StatTracker2Data: data[2].stats[1].value,
+            legend3StatTracker3: data[2].stats[2].metadata.name,
+            legend3StatTracker3Data: data[2].stats[2].value,
+            legend4Name: data[3].metadata.legend_name,
+            legend4StatTracker1: data[3].stats[0].metadata.name,
+            legend4StatTracker1Data: data[3].stats[0].value,
+            legend4StatTracker2: data[3].stats[1].metadata.name,
+            legend4StatTracker2Data: data[3].stats[1].value,
+            legend4StatTracker3: data[3].stats[2].metadata.name,
+            legend4StatTracker3Data: data[3].stats[2].value
+          });
+        });
       }
-      apiCall(screen_name, platformId).then(data => {
-        // for (var i = 0; i < apexData.length; i++) {
-        //   var metadata = "metadata_" + apexData[i].metadata.legend_name;
-        //   var stats = "stats_" + apexData[i].metadata.legend_name;
-        //   legendInfo[metadata] = apexData[i].metadata;
-        //   legendInfo[stats] = apexData[i].stats[i];
-        // }
-        // console.log(legendInfo);
-        console.log(apexData[0].metadata.legend_name);
-        console.log(apexData[0].stats);
-      });
-      res.render("./account/dashboard");
     });
-  // res.render("./account/dashboard");
+});
+
+app.get("/logout", (req, res) => {
+  if (session) {
+    req.session.destroy();
+    req.logout();
+    console.log("Session was destroyed");
+    res.redirect("login");
+  } else {
+    console.log("Session still active");
+  }
 });
 
 // Dynamic Port Setting

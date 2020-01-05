@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 
-function loginRedirect(req, res, next) {
-  if (req.session.user_id) {
-    res.redirect("/account/dashboard");
-  } else {
-    next();
-  }
-}
+// function loginRedirect(req, res, next) {
+//   if (!req.session.user_id) {
+//     res.redirect("/login");
+//   } else {
+//     next();
+//   }
+// }
 
 function authenticate(req, res, next) {
   if (!req.session.user_id) {
@@ -144,18 +144,16 @@ router.post("/to-watch/delete", authenticate, async (req, res) => {
   }
 });
 
-router.get("/logout", authenticate, (req, res) => {
-  if (req.session) {
-    req.session.destroy();
-    // req.session.r;
-    console.log("Session was destroyed");
-    res.redirect("/login");
-    // console.log("Session was destroyed");
-    // console.log(req.sessionID);
-  } else {
-    console.log("Session still active");
-  }
-  res.redirect("/login");
-});
+// router.get("/logout", authenticate, (req, res) => {
+//   req.session.destroy(function() {
+//     req.logout();
+// delete req.session;
+// if (!req.session) {
+//   res.send("User has Logged Out");
+// res.redirect("/login");
+// } else {
+//   res.send("User Session Is Still Live!");
+// }
+// });
 
 module.exports = router;
