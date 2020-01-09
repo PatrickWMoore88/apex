@@ -34,9 +34,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-// var apexData = [];
-//var legendInfo = {};
-
 function apiCall(screen_name, platformId) {
   return axios
     .get(
