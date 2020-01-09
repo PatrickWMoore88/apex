@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "La Li Lu Le Lo",
+    secret: process.env.SERCET,
     resave: false,
     saveUninitialized: true,
     unset: "destroy"
