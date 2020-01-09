@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "npm run migrate && node app.js",
-    "migrate": "npx sequelize-cli db:migrate",
+    "migrate": "npm sequelize-cli db:migrate && db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
