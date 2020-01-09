@@ -181,8 +181,6 @@ app.post("/login", (req, res) => {
           //   legendInfo[metadata] = apexData[i].metadata;
           //   legendInfo[stats] = apexData[i].stats[i];
           // }
-          // console.log(legendInfo);
-          // console.log(apexData);
           console.log(apexData[0].metadata.legend_name);
           console.log(apexData[0].stats[0]);
           console.log(apexData[0].stats[1]);
