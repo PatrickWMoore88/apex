@@ -2,9 +2,9 @@
   "name": "apex",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "npm run migrate && node index.js",
+    "start": "npm run migrate && node app.js",
     "migrate": "npx sequelize-cli db:migrate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
