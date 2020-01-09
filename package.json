@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run migrate && npm run seeder && node app.js",
+    "start": "npm run migrate && npm run seeder && node index.js",
     "migrate": "npx sequelize-cli db:migrate",
     "seeder": "npx sequelize-cli db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
