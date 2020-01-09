@@ -2,7 +2,7 @@
   "name": "apex",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "npm run migrate && npm run seeder && node app.js",
     "migrate": "npx sequelize-cli db:migrate",
