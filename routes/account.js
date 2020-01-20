@@ -2,19 +2,13 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 
-// function loginRedirect(req, res, next) {
-//   if (!req.session.user_id) {
-//     res.redirect("/login");
-//   } else {
-//     next();
-//   }
-// }
-
 function authenticate(req, res, next) {
+  console.log("line 6");
+  console.log(req.session.user_id);
   if (!req.session.user_id) {
     res.redirect("/login");
   } else {
-    next();
+    // next();
   }
 }
 
@@ -24,6 +18,22 @@ router.get("/", authenticate, (req, res) => {
 
 router.get("/dashboard", authenticate, (req, res) => {
   res.render("account/dashboard");
+});
+
+router.get("/explore", async (req, res) => {
+  let data = {};
+  data.legends = await models.legend.findAll();
+  res.render("account/explore", data);
+});
+
+router.get("/explore/:name", async (req, res) => {
+  let data = {};
+  data.legends = await models.legend.findOne({
+    where: { name: req.params.name }
+  });
+  console.log(data.legends.dataValues);
+  req.session.legend_id = data.legends.dataValues.id;
+  res.render("legend", data);
 });
 
 router.get("/favorites", authenticate, async (req, res) => {

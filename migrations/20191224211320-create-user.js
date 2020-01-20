@@ -10,21 +10,23 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
         unique: true
       },
       password: {
-        type: Sequelize.TEXT,
-        allowNull: false
+        type: Sequelize.TEXT
       },
       screen_name: {
         type: Sequelize.STRING,
-        allowNull: false,
         unique: true
       },
       platform: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
+      },
+      display_name: {
+        type: Sequelize.STRING
+      },
+      googleid: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
