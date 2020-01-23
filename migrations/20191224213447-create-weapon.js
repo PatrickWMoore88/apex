@@ -29,9 +29,11 @@ module.exports = {
           },
           key: "id"
         },
-        allowNull: true,
         onDelete: "cascade",
         onUpdate: "cascade"
+      },
+      imageURL: {
+        type: Sequelize.TEXT
       },
       // stabalizer: {
       //   type: Sequelize.INTEGER,

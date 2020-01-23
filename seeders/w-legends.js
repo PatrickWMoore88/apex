@@ -18,6 +18,7 @@ module.exports = {
           sec_passive: null,
           tactical: 1,
           ultimate: 1,
+          imageURL: "/images/268px-Bangalore_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -34,6 +35,7 @@ module.exports = {
           sec_passive: null,
           tactical: 2,
           ultimate: 2,
+          imageURL: "/images/268px-Bloodhound_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -50,6 +52,7 @@ module.exports = {
           sec_passive: 12,
           tactical: 3,
           ultimate: 3,
+          imageURL: "/images/268px-Caustic_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -66,6 +69,7 @@ module.exports = {
           sec_passive: null,
           tactical: 4,
           ultimate: 4,
+          imageURL: "/images/268px-Crypto_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -82,6 +86,7 @@ module.exports = {
           sec_passive: 12,
           tactical: 5,
           ultimate: 5,
+          imageURL: "/images/268px-Gibraltar_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -98,6 +103,7 @@ module.exports = {
           sec_passive: 13,
           tactical: 6,
           ultimate: 6,
+          imageURL: "/images/268px-Lifeline_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -114,6 +120,7 @@ module.exports = {
           sec_passive: null,
           tactical: 7,
           ultimate: 7,
+          imageURL: "/images/268px-Mirage_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -130,6 +137,7 @@ module.exports = {
           sec_passive: null,
           tactical: 8,
           ultimate: 8,
+          imageURL: "/images/268px-Octane_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -146,6 +154,7 @@ module.exports = {
           sec_passive: 13,
           tactical: 9,
           ultimate: 9,
+          imageURL: "/images/268px-Pathfinder_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -162,6 +171,7 @@ module.exports = {
           sec_passive: 13,
           tactical: 10,
           ultimate: 10,
+          imageURL: "/images/268px-Wattson_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -178,6 +188,7 @@ module.exports = {
           sec_passive: 13,
           tactical: 11,
           ultimate: 11,
+          imageURL: "/images/268px-Wraith_Icon.png",
           createdAt: new Date(),
           updatedAt: new Date()
         }

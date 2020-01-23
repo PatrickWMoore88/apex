@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       prim_passive: DataTypes.INTEGER,
       sec_passive: DataTypes.INTEGER,
       tactical: DataTypes.INTEGER,
-      ultimate: DataTypes.INTEGER
+      ultimate: DataTypes.INTEGER,
+      imageURL: DataTypes.TEXT
     },
     {}
   );

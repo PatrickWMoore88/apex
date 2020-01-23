@@ -91,7 +91,7 @@ passport.use(
     models.user
       .findOne({
         where: {
-          name: username
+          screen_name: username
         }
       })
       .then(function(user) {
@@ -117,7 +117,7 @@ router.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/error" }),
   (req, res) => {
-    res.redirect("/success?username=" + req.user.name);
+    res.redirect("/success?username=" + req.user.screen_name);
   }
 );
 
@@ -129,8 +129,10 @@ router.get("/signed_in", (req, res) => {
       }
     })
     .then(function(user) {
-      let platform = user.dataValues.platform;
-      let screen_name = user.dataValues.screen_name;
+      req.session.passport.platform = user.dataValues.platform;
+      req.session.passport.screen_name = user.dataValues.screen_name;
+      let platform = req.session.passport.platform;
+      let screen_name = req.session.passport.screen_name;
       if (platform == "XBOX") {
         var platformId = 1;
       } else if (platform == "PSN") {
@@ -139,17 +141,10 @@ router.get("/signed_in", (req, res) => {
         var platformId = 5;
       }
       apiCall(screen_name, platformId).then(data => {
-        console.log(apexData[0].metadata.legend_name);
-        console.log(apexData[0].stats[0]);
-        console.log(apexData[0].stats[1]);
-        console.log(apexData[0].stats[2]);
-        console.log(apexData[1].metadata.legend_name);
-        console.log(apexData[1].stats[0]);
-        console.log(apexData[1].stats[1]);
-        console.log(apexData[1].stats[2]);
         res.render("./account/dashboard", {
-          username: req.body.user_name,
+          username: req.session.passport.screen_name,
           legend1Name: data[0].metadata.legend_name,
+          legend1Image: data[0].metadata.icon,
           legend1StatTracker1: data[0].stats[0].metadata.name,
           legend1StatTracker1Data: data[0].stats[0].value,
           legend1StatTracker2: data[0].stats[1].metadata.name,
@@ -157,6 +152,7 @@ router.get("/signed_in", (req, res) => {
           legend1StatTracker3: data[0].stats[2].metadata.name,
           legend1StatTracker3Data: data[0].stats[2].value,
           legend2Name: data[1].metadata.legend_name,
+          legend2Image: data[1].metadata.icon,
           legend2StatTracker1: data[1].stats[0].metadata.name,
           legend2StatTracker1Data: data[1].stats[0].value,
           legend2StatTracker2: data[1].stats[1].metadata.name,
@@ -164,19 +160,13 @@ router.get("/signed_in", (req, res) => {
           legend2StatTracker3: data[1].stats[2].metadata.name,
           legend2StatTracker3Data: data[1].stats[2].value,
           legend3Name: data[2].metadata.legend_name,
+          legend3Image: data[2].metadata.icon,
           legend3StatTracker1: data[2].stats[0].metadata.name,
           legend3StatTracker1Data: data[2].stats[0].value,
           legend3StatTracker2: data[2].stats[1].metadata.name,
           legend3StatTracker2Data: data[2].stats[1].value,
           legend3StatTracker3: data[2].stats[2].metadata.name,
-          legend3StatTracker3Data: data[2].stats[2].value,
-          legend4Name: data[3].metadata.legend_name,
-          legend4StatTracker1: data[3].stats[0].metadata.name,
-          legend4StatTracker1Data: data[3].stats[0].value,
-          legend4StatTracker2: data[3].stats[1].metadata.name,
-          legend4StatTracker2Data: data[3].stats[1].value,
-          legend4StatTracker3: data[3].stats[2].metadata.name,
-          legend4StatTracker3Data: data[3].stats[2].value
+          legend3StatTracker3Data: data[2].stats[2].value
         });
       });
     });
@@ -187,10 +177,9 @@ router.get("/registration", (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  // try {
   await models.user
     .findOne({
-      where: { name: req.body.user_name }
+      where: { screen_name: req.body.screen_name }
     })
     .then(function(registeredUser) {
       if (registeredUser) {
@@ -199,9 +188,8 @@ router.post("/register", async (req, res) => {
       } else {
         models.user
           .create({
-            name: req.body.user_name,
-            password: encryptionPassword(req.body.password),
             screen_name: req.body.screen_name,
+            password: encryptionPassword(req.body.password),
             platform: req.body.platform
           })
           .then(function(user) {

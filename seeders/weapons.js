@@ -11,24 +11,27 @@ module.exports = {
           type: "Assault Rifle",
           rarity: "Common",
           ammo_type: 2,
+          imageURL: "/images/vk-47-flatline-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          name: "Hemlok Burst AR ",
+          name: "Hemlok Burst AR",
           dps: 180,
-          type: "Assult Rifle",
+          type: "Assault Rifle",
           rarity: "Common",
           ammo_type: 2,
+          imageURL: "/images/hemlok-burst-ar-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
           name: "R-301 Carbine",
           dps: 168,
-          type: "Assult Rifle",
+          type: "Assault Rifle",
           rarity: "Common",
           ammo_type: 1,
+          imageURL: "/images/r-301-apex-legends.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -38,6 +41,7 @@ module.exports = {
           type: "Assault Rifle",
           rarity: "Common",
           ammo_type: 3,
+          imageURL: "/images/havoc-rifle-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -47,6 +51,7 @@ module.exports = {
           type: "Sub Machine Gun",
           rarity: "Common",
           ammo_type: 1,
+          imageURL: "/images/alternator-smg-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -56,6 +61,7 @@ module.exports = {
           type: "Sub Machine Gun",
           rarity: "Common",
           ammo_type: 2,
+          imageURL: "/images/prowler-burst-pdw-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -65,6 +71,7 @@ module.exports = {
           type: "Sub Machine Gun",
           rarity: "Common",
           ammo_type: 1,
+          imageURL: "/images/r-99-smg-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -74,6 +81,7 @@ module.exports = {
           type: "Light Machine Gun",
           rarity: "Common",
           ammo_type: 3,
+          imageURL: "/images/devotion-lmg-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -83,6 +91,7 @@ module.exports = {
           type: "Light Machine Gun",
           rarity: "Common",
           ammo_type: 2,
+          imageURL: "/images/m600-spitfire-apex-legends.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -92,6 +101,7 @@ module.exports = {
           type: "Light Machine Gun",
           rarity: "Legendary (Gold)",
           ammo_type: null,
+          imageURL: "/images/l-star-emg-apex-legends.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -101,6 +111,7 @@ module.exports = {
           type: "Sniper Rifle",
           rarity: "Common",
           ammo_type: 2,
+          imageURL: "/images/longbow-dmr-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -110,6 +121,7 @@ module.exports = {
           type: "Sniper Rifle",
           rarity: "Common",
           ammo_type: 1,
+          imageURL: "/images/g7-scout-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -119,24 +131,26 @@ module.exports = {
           type: "Sniper Rifle",
           rarity: "Common",
           ammo_type: 3,
+          imageURL: "/images/triple-take-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
-        {
-          name: "Charge Rifle",
-          dps: null,
-          type: "Sniper Rifle",
-          rarity: "Common",
-          ammo_type: 3,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
+        // {
+        //   name: "Charge Rifle",
+        //   dps: null,
+        //   type: "Sniper Rifle",
+        //   rarity: "Common",
+        //   ammo_type: 3,
+        //   createdAt: new Date(),
+        //   updatedAt: new Date()
+        // },
         {
           name: "Kraber .50-cal Sniper",
           dps: 87,
           type: "Sniper Rifle",
           rarity: "Legendary (Gold)",
           ammo_type: null,
+          imageURL: "/images/kraber-apex-legends.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -146,6 +160,7 @@ module.exports = {
           type: "Shotgun",
           rarity: "Common",
           ammo_type: 4,
+          imageURL: "/images/eva-8-auto-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -155,6 +170,7 @@ module.exports = {
           type: "Shotgun",
           rarity: "Common",
           ammo_type: 4,
+          imageURL: "/images/mozambique-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -164,6 +180,7 @@ module.exports = {
           type: "Shotgun",
           rarity: "Common",
           ammo_type: 4,
+          imageURL: "/images/peacekeeper-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -173,6 +190,7 @@ module.exports = {
           type: "Shotgun",
           rarity: "Legendary (Gold)",
           ammo_type: null,
+          imageURL: "/images/mastiff-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -182,6 +200,7 @@ module.exports = {
           type: "Pistols",
           rarity: "Common",
           ammo_type: 1,
+          imageURL: "/images/re-45-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -191,6 +210,7 @@ module.exports = {
           type: "Pistols",
           rarity: "Common",
           ammo_type: 1,
+          imageURL: "/images/p2020-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -200,6 +220,7 @@ module.exports = {
           type: "Pistols",
           rarity: "Common",
           ammo_type: 2,
+          imageURL: "/images/wingman-featured.jpg",
           createdAt: new Date(),
           updatedAt: new Date()
         }
