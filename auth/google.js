@@ -1,9 +1,9 @@
 const express = require("express");
-const app = express();
+// const app = express();
 const session = require("express-session");
 const models = require("../models");
 const pbkdf2 = require("pbkdf2");
-const axios = require("axios");
+// const axios = require("axios");
 const bodyParser = require("body-parser");
 const router = express.Router();
 
