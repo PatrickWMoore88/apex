@@ -1,0 +1,14 @@
+extend account
+
+append base
+    .container 
+        .row
+            .col
+                h1 Apex User Data - Delete Account
+                br 
+                form(method="POST" action="/account/deleteAccount")
+                    //- .form-group
+                    //-     label(for='screen_name') Change Screen_name
+                    //-     input#screen_name.form-control(type="text" aria-describedby='emailHelp' placeholder='Change Screen Name' name="screen_name")
+                        br
+                    button.btn.btn-primary Delete

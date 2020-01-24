@@ -1,0 +1,18 @@
+extend account
+
+append base
+    .container 
+        .row
+            .col
+                h1 Apex User Data - Account Management
+                br 
+                button.btn.btn-primary
+                    a(href='/account/manageScreenNameAndPlatform') Update Screen Name & Platform
+                br
+                br
+                button.btn.btn-primary
+                    a(href='/account/managePassword') Update Password
+                br
+                br 
+                button.btn.btn-primary
+                    a(href='/account/manageDelete') Delete Account

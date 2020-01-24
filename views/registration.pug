@@ -1,0 +1,36 @@
+extend layout
+
+block content
+    .container 
+        .row
+            .col
+                h1 Apex User Data - Registration
+                p Submit Your User Information 
+                form(method="POST" action="/register")
+                    .form-group
+                        label(for='screen_name') Screen_name
+                        input#screen_name.form-control(type="text" aria-describedby='emailHelp' placeholder='Enter your Screen Name' name="screen_name")
+                    .form-group
+                        label(for='password') Password
+                        input#password.form-control(type='password' aria-describedby='emailHelp' placeholder='Enter your password' name="password")
+                    .form-group
+                        label.control-label.requiredField(for='platform')
+                        | Platform
+                    .col-xs-12
+                        select#platform.select.form-control.input-lg(name='platform')
+                            option(value='0', selected= true) -- Select --
+                            option(value='XBOX', selected= false) XBOX
+                            option(value='PSN', selected= false) PSN
+                            option(value='Origin / PC', selected= false) Origin / PC
+                        br
+                    button.btn.btn-primary Register
+                    br
+                    br
+                    a(href="/auth/google")
+                        img(src="/images/google-plus-logo.png" width='50' height='50' alt="google logo")
+                    br
+                    br
+                    br
+                    br
+                    h2 Already A Member? 
+                        a(href="/login") Login

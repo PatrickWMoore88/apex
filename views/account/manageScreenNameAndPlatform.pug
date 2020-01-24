@@ -1,0 +1,23 @@
+extend account
+
+append base
+    .container 
+        .row
+            .col
+                h1 Apex User Data - Screen Name Management
+                br 
+                form(method="POST" action="/account/updateScreenNameAndPlatform")
+                    .form-group
+                        label(for='screen_name') Change Screen_name
+                        input#screen_name.form-control(type="text" aria-describedby='emailHelp' placeholder='Change Screen Name' name="screen_name")
+                    .form-group
+                        label.control-label.requiredField(for='platform')
+                        | Change Platform
+                    .col-xs-12
+                        select#platform.select.form-control.input-lg(name='platform')
+                            option(value='0', selected= true) -- Select --
+                            option(value='XBOX', selected= false) XBOX
+                            option(value='PSN', selected= false) PSN
+                            option(value='Origin / PC', selected= false) Origin / PC
+                        br
+                    button.btn.btn-primary Submit

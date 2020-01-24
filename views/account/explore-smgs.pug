@@ -1,0 +1,15 @@
+extend account
+
+append base
+    br
+    h3 Welcome to the Sub Machine Gun Info
+    br
+    div.top
+        each weapon in weapons
+            -var weaponUrl = '/account/weapon-types/smgs/' + weapon.name
+            -var imageUrl = weapon.imageURL
+            .card-deck
+                .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+                    img.card-img-top(src=imageUrl alt='Sub Machine Gun Image')
+                    .card-body
+                    a.card-title(href=weaponUrl)= weapon.name

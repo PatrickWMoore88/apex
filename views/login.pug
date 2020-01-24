@@ -1,0 +1,32 @@
+extend layout
+
+block content
+    .container
+        .row
+            .col
+                h1 Apex - Login
+                if registeredSuccessfully
+                    .alert.alert-success Squad Up!
+                form(method="POST" action="/login")
+                    .form-group
+                        label(for='username') Screen Name
+                        input#name.form-control(type='text' aria-describedby='emailHelp' placeholder='Enter Screen Name' name="username")
+                    .form-group
+                        label(for='password') Password
+                        input#password.form-control(type='password' aria-describedby='emailHelp' placeholder='Enter password' name="password")
+                    br
+                    button.btn.btn-primary Login
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    h2 Not A Member? 
+                        a(href="/registration") Register

@@ -1,0 +1,15 @@
+extend account
+
+append base
+    br
+    h3 Welcome to the Light Machine Gun Info
+    br
+    div.top
+        each weapon in weapons
+            -var weaponUrl = '/account/weapon-types/lmgs/' + weapon.name
+            -var imageUrl = weapon.imageURL
+            .card-deck
+                .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+                    img.card-img-top(src=imageUrl alt='Light Machine Gun Image')
+                    .card-body
+                    a.card-title(href=weaponUrl)= weapon.name

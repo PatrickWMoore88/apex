@@ -1,0 +1,51 @@
+extend account
+
+append base
+    a(href='/account/legends') Back to the Legends
+    br
+    br
+    .card-deck
+        .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+                img.card-img-top(src=legends.imageURL alt='Apex Legend Image')
+                br
+                h4= "Legend Name"
+                br
+                h4= legends.name
+    button.btn.btn-primary(type='button' data-toggle='modal' data-target='#exampleModal')
+        | Read #{legends.name} Bio
+    #exampleModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+            .modal-header
+                h5#exampleModalLabel.modal-title The Legend of #{legends.name}
+                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') &times;
+            .modal-body
+                h5= legends.back_story
+
+    //- .card-deck
+    //-     .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+    //-             img.card-img-top(src=legends.imageURL alt='Apex Legend Image')
+    //-             br
+    //-             h4= "Legend Name"
+    //-             br
+    //-             br
+    //-             h4= legends.name
+    //-     .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+    //-             h4= "Real Name: "
+    //-             h4= legends.real_name
+    //-             br
+    //-             h4= "Gender: "
+    //-             h4= legends.gender
+    //-             br
+    //-             h4= "Age: "
+    //-             h4= legends.age
+    //-             br
+    //-             h4= "Home World: "
+    //-             h4= legends.home_world
+    //-             br
+    //-             h4= "Role: "
+    //-             h4= legends.role     
+    //- .card
+    //-     .card-body
+    //-         h5= legends.back_story

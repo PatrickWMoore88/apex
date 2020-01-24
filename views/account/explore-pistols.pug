@@ -1,0 +1,15 @@
+extend account
+
+append base
+    br
+    h3 Welcome to the Pistol Info
+    br
+    div.top
+        each weapon in weapons
+            -var weaponUrl = '/account/weapon-types/pistols/' + weapon.name
+            -var imageUrl = weapon.imageURL
+            .card-deck
+                .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+                    img.card-img-top(src=imageUrl alt='Pistol Image')
+                    .card-body
+                    a.card-title(href=weaponUrl)= weapon.name
