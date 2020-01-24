@@ -91,7 +91,11 @@ passport.use(
 router.get(
   "/auth/google",
   passport.authenticate("google", {
-    scope: ["profile"]
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+    // scope: ["profile"]
   }),
   (req, res) => {}
 );
