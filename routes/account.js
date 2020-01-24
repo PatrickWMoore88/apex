@@ -1,7 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models");
+const pbkdf2 = require("pbkdf2");
 const axios = require("axios");
+
+require("dotenv").config();
+
+var salt = process.env.SALT_KEY;
+
+function encryptionPassword(password) {
+  var key = pbkdf2.pbkdf2Sync(password, salt, 36000, 256, "sha256");
+  var hash = key.toString("hex");
+  return hash;
+}
 
 function apiCall(screen_name, platformId) {
   return axios
@@ -87,24 +98,57 @@ router.get("/management", (req, res) => {
   });
 });
 
-router.get("/manageScreenName", (req, res) => {
-  res.render("account/manageScreenName", {
+router.get("/manageScreenNameAndPlatform", (req, res) => {
+  res.render("account/manageScreenNameAndPlatform", {
     username: req.session.passport.screen_name
   });
 });
 
-router.post("/updateScreenName", async (req, res) => {
-  console.log("I'm here");
+router.post("/updateScreenNameAndPlatform", async (req, res) => {
   await models.user
     .update(
-      { screen_name: req.body.screen_name },
+      { screen_name: req.body.screen_name, platform: req.body.platform },
       { where: { id: req.session.passport.user } }
     )
     .then(user => {
-      req.session.passport.screen_name = req.body.username;
-      res.render("./account/dashboard", {
-        username: req.session.passport.screen_name
-      });
+      res.render("login");
+    });
+});
+
+router.get("/managePassword", (req, res) => {
+  res.render("account/managePassword", {
+    username: req.session.passport.screen_name
+  });
+});
+
+router.post("/updatePassword", async (req, res) => {
+  await models.user
+    .update(
+      { password: encryptionPassword(req.body.password) },
+      { where: { id: req.session.passport.user } }
+    )
+    .then(user => {
+      res.render("login");
+    });
+});
+
+router.get("/manageDelete", (req, res) => {
+  res.render("account/manageDelete", {
+    username: req.session.passport.screen_name
+  });
+});
+
+// router.get("/deleteAccount", (req, res) => {
+//   res.redirect("/deleteAccount");
+// });
+
+router.post("/deleteAccount", async (req, res) => {
+  await models.user
+    .destroy({ where: { id: req.session.passport.user } })
+    .then(user => {
+      req.session.destroy();
+      // res.render("./login");
+      res.redirect("../registration");
     });
 });
 
