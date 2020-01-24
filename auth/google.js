@@ -67,7 +67,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: absoluteURI + "/auth/google/callback"
+      callbackURL: "/auth/google/callback"
     },
     (accesstoken, tokenSecret, profile, done) => {
       models.user
