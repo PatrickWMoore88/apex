@@ -67,7 +67,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback"
+      callbackURL: absoluteURI + "/auth/google/callback"
     },
     (accesstoken, tokenSecret, profile, done) => {
       models.user
@@ -91,11 +91,11 @@ passport.use(
 router.get(
   "/auth/google",
   passport.authenticate("google", {
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
-    // scope: ["profile"]
+    // scope: [
+    //   "https://www.googleapis.com/auth/userinfo.profile",
+    //   "https://www.googleapis.com/auth/userinfo.email"
+    // ]
+    scope: ["profile"]
   }),
   (req, res) => {}
 );
