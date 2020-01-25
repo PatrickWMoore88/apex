@@ -111,7 +111,6 @@ a:focus {
 
 .top {
   display: inline-flex;
-  flex-wrap: wrap;
 }
 
 .bottom {
