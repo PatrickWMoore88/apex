@@ -67,8 +67,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        "https://apex-data.herokuapp.com/auth/google/callback/auth/google/callback"
+      callbackURL: "https://apex-data.herokuapp.com/auth/google/callback"
     },
     (accesstoken, tokenSecret, profile, done) => {
       models.user
