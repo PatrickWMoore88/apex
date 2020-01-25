@@ -11,17 +11,47 @@ append base
                 h4= "Legend Name"
                 br
                 h4= legends.name
-    button.btn.btn-primary(type='button' data-toggle='modal' data-target='#exampleModal')
-        | Read #{legends.name} Bio
-    #exampleModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-        .modal-dialog(role='document')
-            .modal-content
-            .modal-header
-                h5#exampleModalLabel.modal-title The Legend of #{legends.name}
-                button.close(type='button' data-dismiss='modal' aria-label='Close')
-                span(aria-hidden='true') &times;
-            .modal-body
-                h5= legends.back_story
+                br
+                br
+                button.btn.btn-primary(type='button' data-toggle='modal' data-target='#exampleModal')
+                    | Read #{legends.name} Bio
+                #exampleModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+                    .modal-dialog(role='document')
+                        .modal-content
+                        .modal-header
+                            h5#exampleModalLabel.modal-title The Legend of #{legends.name}
+                            button.close(type='button' data-dismiss='modal' aria-label='Close')
+                            span(aria-hidden='true') &times;
+                        .modal-body
+                            h5= legends.back_story
+        div
+            .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
+                br 
+                h3= "Real Name"
+                h3= legends.real_name
+                br
+                h3= "Gender"
+                h3= legends.gender
+                br
+                h3= "Age"
+                h3= legends.age
+                br
+                h3= "Home World"
+                h3= legends.home_world
+                br
+                h3= "Role"
+                h3= legends.role 
+    //- button.btn.btn-primary(type='button' data-toggle='modal' data-target='#exampleModal')
+    //-     | Read #{legends.name} Bio
+    //- #exampleModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+    //-     .modal-dialog(role='document')
+    //-         .modal-content
+    //-         .modal-header
+    //-             h5#exampleModalLabel.modal-title The Legend of #{legends.name}
+    //-             button.close(type='button' data-dismiss='modal' aria-label='Close')
+    //-             span(aria-hidden='true') &times;
+    //-         .modal-body
+    //-             h5= legends.back_story
 
     //- .card-deck
     //-     .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
