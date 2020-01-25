@@ -1,6 +1,8 @@
 extend account
 
 append base
+    br
+    br
     .card-deck.weapons
         div.top
             .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
@@ -18,6 +20,7 @@ append base
                 .card-body
                 form(action='/account/weapon-types/lmgs' method='get')
                             button.btn.btn-primary(type='submit') Light Machine Guns
+        br
         div.bottom
             .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
                 img.card-img-top(src="/images/Apex-Legends-Pistols-300x164.png" alt='Apex Legend Image')

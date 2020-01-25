@@ -110,11 +110,19 @@ a:focus {
 }
 
 .top {
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
 }
 
 .bottom {
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
+}
+
+.weapons {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
 }
 
 .top-img {
