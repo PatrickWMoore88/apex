@@ -1,35 +1,27 @@
 extend account
 
 append base
-    a(href='/account/weapon-types') Back to the Weapons
+    form(action='/account/weapon-types' method='get')
+                    button.btn.btn-primary(type='submit') Back to the Weapons
     br
     br
     .card-deck
         .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
                 img.card-img-top(src=weapons.imageURL alt='Apex Legend Image')
                 br
-                h2= "Weapon Name"
-                br
-                br
-                br
+                h2= "Weapon Name:"
                 br
                 h2= weapons.name
+                br
         div
             .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
                 br
-                h3= "DPS"
-                br
+                h3= "DPS:"
                 h3= weapons.dps
                 br
-            .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
-                br
-                h3= "Weapon Type"
-                br
+                h3= "Weapon Type:"
                 h3= weapons.type
                 br
-            .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
-                br
-                h3= "Rarity"
-                br
+                h3= "Rarity:"
                 h3= weapons.rarity
                 br
