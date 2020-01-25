@@ -29,5 +29,5 @@ block content
                     br
                     br
                     h2 Not A Member? 
-                        button.btn.btn-primary
-                            a(href="/registration") Register
+                        form(action="/registration" method='get')
+                            button.btn.btn-primary(type='submit') Register

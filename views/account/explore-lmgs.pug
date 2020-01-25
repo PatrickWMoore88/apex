@@ -12,5 +12,5 @@ append base
                 .card.text-white.bg-dark.mb-3(style='max-width: 18rem;')
                     img.card-img-top(src=imageUrl alt='Light Machine Gun Image')
                     .card-body
-                    button.btn.btn-primary.card-title
-                        a.card-title(href=weaponUrl)= weapon.name
+                    form(action=weaponUrl method='get')
+                        button.btn.btn-primary(type='submit')= weapon.name

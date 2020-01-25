@@ -7,14 +7,12 @@ append base
                 h1 Apex User Data - Account Management
                 br 
                 form(action='/account/manageScreenNameAndPlatform' method='get')
-                    button(type='submit') Update Screen Name & Platform
-                //- button.btn.btn-primary(type="button" onclick=(href='/account/manageScreenNameAndPlatform')) Update Screen Name & Platform
-                    //- a(href='/account/manageScreenNameAndPlatform') Update Screen Name & Platform
+                    button.btn.btn-primary(type='submit') Update Screen Name & Platform
                 br
                 br
-                button.btn.btn-primary
-                    a(href='/account/managePassword') Update Password
+                form(action='/account/managePassword' method='get')
+                    button.btn.btn-primary(type='submit') Update Password
                 br
                 br 
-                button.btn.btn-primary
-                    a(href='/account/manageDelete') Delete Account
+                form(action='/account/manageDelete' method='get')
+                    button.btn.btn-primary(type='submit') Delete Account

@@ -33,5 +33,5 @@ block content
                     br
                     br
                     h2 Already A Member? 
-                        button.btn.btn-primary
-                            a(href="/login") Login
+                        form(action="/login" method='get')
+                            button.btn.btn-primary(type='submit') Login
