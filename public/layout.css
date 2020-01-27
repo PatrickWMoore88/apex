@@ -125,6 +125,10 @@ a:focus {
   align-content: center;
 }
 
+.explore-weapons {
+  display: inline-flex;
+}
+
 .top-img {
   max-height: 150px;
   max-width: 160px;
